@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6vhhhyia3cio"]
+
+[ext_resource type="Shader" path="res://world.gdshader" id="1_0o1k0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cp8lq"]
+seed = 7
+frequency = 0.0035
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tif3u"]
+noise = SubResource("FastNoiseLite_cp8lq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3tyg"]
+shader = ExtResource("1_0o1k0")
+shader_parameter/islandness = 0.805
+shader_parameter/land_height = 0.24
+shader_parameter/land_noise = SubResource("NoiseTexture2D_tif3u")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_62xrt"]
+size = Vector2(4, 4)
+
+[node name="main" type="Node2D"]
+
+[node name="Icon" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_e3tyg")
+position = Vector2(360, 360)
+scale = Vector2(180, 180)
+texture = SubResource("PlaceholderTexture2D_62xrt")
