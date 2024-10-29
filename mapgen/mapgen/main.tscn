@@ -1,27 +1,61 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6vhhhyia3cio"]
+[gd_scene load_steps=12 format=3 uid="uid://c6vhhhyia3cio"]
 
 [ext_resource type="Shader" path="res://world.gdshader" id="1_0o1k0"]
+[ext_resource type="Shader" path="res://map.gdshader" id="1_j46lp"]
+[ext_resource type="Script" path="res://main.gd" id="1_ynw0c"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_cp8lq"]
-seed = 7
-frequency = 0.0035
+[sub_resource type="ViewportTexture" id="ViewportTexture_6gviw"]
+viewport_path = NodePath("draw_vp")
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tif3u"]
-noise = SubResource("FastNoiseLite_cp8lq")
+[sub_resource type="ViewportTexture" id="ViewportTexture_p1t8v"]
+viewport_path = NodePath("noise_vp")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3tyg"]
-shader = ExtResource("1_0o1k0")
-shader_parameter/islandness = 0.805
-shader_parameter/land_height = 0.24
-shader_parameter/land_noise = SubResource("NoiseTexture2D_tif3u")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h1bp1"]
+resource_local_to_scene = true
+shader = ExtResource("1_j46lp")
+shader_parameter/land_col = Color(0.882353, 0.756863, 0.654902, 1)
+shader_parameter/noise = SubResource("ViewportTexture_p1t8v")
+shader_parameter/draw = SubResource("ViewportTexture_6gviw")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_62xrt"]
 size = Vector2(4, 4)
 
-[node name="main" type="Node2D"]
+[sub_resource type="Gradient" id="Gradient_qxmpl"]
+offsets = PackedFloat32Array(0, 0.012931, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.25, 0.25, 0.25, 1, 1, 1, 1, 1)
 
-[node name="Icon" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_e3tyg")
-position = Vector2(360, 360)
-scale = Vector2(180, 180)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cp8lq"]
+seed = 7
+frequency = 0.0068
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tif3u"]
+width = 1000
+height = 1000
+color_ramp = SubResource("Gradient_qxmpl")
+noise = SubResource("FastNoiseLite_cp8lq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3tyg"]
+shader = ExtResource("1_0o1k0")
+shader_parameter/land_noise = SubResource("NoiseTexture2D_tif3u")
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_ynw0c")
+
+[node name="world" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_h1bp1")
+scale = Vector2(250, 250)
 texture = SubResource("PlaceholderTexture2D_62xrt")
+centered = false
+
+[node name="noise_vp" type="SubViewport" parent="."]
+size = Vector2i(1000, 1000)
+
+[node name="noise" type="Sprite2D" parent="noise_vp"]
+material = SubResource("ShaderMaterial_e3tyg")
+scale = Vector2(250, 250)
+texture = SubResource("PlaceholderTexture2D_62xrt")
+centered = false
+
+[node name="draw_vp" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1000, 1000)
