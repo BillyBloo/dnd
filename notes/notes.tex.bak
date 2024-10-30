@@ -1,0 +1,15 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[margin=0.5in]{geometry}
+\title{Lost Mine of Phandelver Notes}
+\date{2024}
+\begin{document}
+\maketitle
+\section{Sildar Holwinter}
+A friend of Gundred, was with him when they were ambushed by the gobins. Sildar says Gundred was taken to a "Kragmor Castle."
+\section{Phandalin}
+The owners of the \emph{Stonhill Inn,} Toblen and Trilena Stonehill say that because of the Orks to the east, the Red(?) bandits to the west and a gang causing mishcheif, buisiness is poor.
+
+\emph{Rumours} overheard at the stonehill of someone poking around at the old owl wells? Something mysterious about the old adventurer of the orchard.
+
+\end{document}
