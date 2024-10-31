@@ -5,8 +5,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yvacf"]
 shader = ExtResource("1_hw7c6")
+shader_parameter/a_mult = 1.0
 
 [node name="dot" type="Sprite2D"]
 material = SubResource("ShaderMaterial_yvacf")
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_chnu7")

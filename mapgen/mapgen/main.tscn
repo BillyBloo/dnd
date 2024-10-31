@@ -1,45 +1,127 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6vhhhyia3cio"]
+[gd_scene load_steps=20 format=3 uid="uid://c6vhhhyia3cio"]
 
-[ext_resource type="Shader" path="res://world.gdshader" id="1_0o1k0"]
+[ext_resource type="Script" path="res://drawing.gd" id="1_45ky3"]
 [ext_resource type="Shader" path="res://map.gdshader" id="1_j46lp"]
-[ext_resource type="Script" path="res://main.gd" id="1_ynw0c"]
+[ext_resource type="Texture2D" uid="uid://de1ukdpiwe0cq" path="res://art/trees/Forest, pine, 3.png" id="2_5ydif"]
+[ext_resource type="Texture2D" uid="uid://btjptp4ioe1rs" path="res://art/trees/Forest, pine, 4.png" id="3_1jn2a"]
+[ext_resource type="Texture2D" uid="uid://cq3uc5yf2k0mi" path="res://art/trees/Forest, pine, 2.png" id="3_26mok"]
+[ext_resource type="Shader" path="res://cursor.gdshader" id="3_jsry2"]
+[ext_resource type="Script" path="res://draw_vp.gd" id="3_wfyoq"]
+[ext_resource type="Script" path="res://sprite_2d.gd" id="4_55t5i"]
+[ext_resource type="Texture2D" uid="uid://cw83a36mr08ve" path="res://icon.svg" id="4_lfbv3"]
+[ext_resource type="Texture2D" uid="uid://bqfq1sq1m1kg6" path="res://art/trees/Forest, pine, 1.png" id="5_l3j20"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_6gviw"]
 viewport_path = NodePath("draw_vp")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_p1t8v"]
-viewport_path = NodePath("noise_vp")
+[sub_resource type="Gradient" id="Gradient_iqmsu"]
+colors = PackedColorArray(0.95, 0.893, 0.779, 0, 0.94902, 0.894118, 0.780392, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_oxpbb"]
+gradient = SubResource("Gradient_iqmsu")
+
+[sub_resource type="Gradient" id="Gradient_kdsro"]
+offsets = PackedFloat32Array(0.185345, 0.797414)
+colors = PackedColorArray(0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xyuu0"]
+frequency = 0.0563
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ud72y"]
+seamless = true
+color_ramp = SubResource("Gradient_kdsro")
+noise = SubResource("FastNoiseLite_xyuu0")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h1bp1"]
 resource_local_to_scene = true
 shader = ExtResource("1_j46lp")
-shader_parameter/land_col = Color(0.882353, 0.756863, 0.654902, 1)
-shader_parameter/noise = SubResource("ViewportTexture_p1t8v")
+shader_parameter/land_col = Color(0.878431, 0.847059, 0.788235, 1)
+shader_parameter/blur_samples_width = 11
+shader_parameter/res = Vector2(1000, 1000)
+shader_parameter/blur_sample_spacing = 2.0
+shader_parameter/noise = SubResource("NoiseTexture2D_ud72y")
 shader_parameter/draw = SubResource("ViewportTexture_6gviw")
+shader_parameter/land_grad = SubResource("GradientTexture1D_oxpbb")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_62xrt"]
 size = Vector2(4, 4)
 
-[sub_resource type="Gradient" id="Gradient_qxmpl"]
-offsets = PackedFloat32Array(0, 0.012931, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.25, 0.25, 0.25, 1, 1, 1, 1, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_cp8lq"]
-seed = 7
-frequency = 0.0068
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tif3u"]
-width = 1000
-height = 1000
-color_ramp = SubResource("Gradient_qxmpl")
-noise = SubResource("FastNoiseLite_cp8lq")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3tyg"]
-shader = ExtResource("1_0o1k0")
-shader_parameter/land_noise = SubResource("NoiseTexture2D_tif3u")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g425y"]
+shader = ExtResource("3_jsry2")
+shader_parameter/size = 128.0
 
 [node name="main" type="Node2D"]
-script = ExtResource("1_ynw0c")
+script = ExtResource("1_45ky3")
+
+[node name="map_nodes" type="Node2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+scale = Vector2(0.25, 0.25)
+
+[node name="Forest,Pine,3" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1788, 1520)
+texture = ExtResource("2_5ydif")
+
+[node name="Forest,Pine,2" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1868, 1544)
+texture = ExtResource("3_26mok")
+
+[node name="Forest,Pine,5" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1784, 1444)
+texture = ExtResource("3_26mok")
+
+[node name="Forest,Pine,4" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1780, 1580)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,6" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1912, 1508)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,13" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1912, 1508)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,7" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1916, 1584)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,8" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1872, 1516)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,9" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1724, 1548)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,10" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1708, 1480)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,11" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1776, 1408)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,12" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1776, 1408)
+texture = ExtResource("3_1jn2a")
+
+[node name="Forest,Pine,1" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1848, 1472)
+texture = ExtResource("5_l3j20")
+
+[node name="Forest,Pine,14" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1888, 1576)
+texture = ExtResource("5_l3j20")
+
+[node name="Forest,Pine,15" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1780, 1480)
+texture = ExtResource("5_l3j20")
+
+[node name="Forest,Pine,16" type="Sprite2D" parent="map_nodes"]
+position = Vector2(1880, 1444)
+texture = ExtResource("5_l3j20")
 
 [node name="world" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_h1bp1")
@@ -47,15 +129,19 @@ scale = Vector2(250, 250)
 texture = SubResource("PlaceholderTexture2D_62xrt")
 centered = false
 
-[node name="noise_vp" type="SubViewport" parent="."]
-size = Vector2i(1000, 1000)
-
-[node name="noise" type="Sprite2D" parent="noise_vp"]
-material = SubResource("ShaderMaterial_e3tyg")
-scale = Vector2(250, 250)
-texture = SubResource("PlaceholderTexture2D_62xrt")
-centered = false
-
 [node name="draw_vp" type="SubViewport" parent="."]
 transparent_bg = true
 size = Vector2i(1000, 1000)
+render_target_clear_mode = 1
+render_target_update_mode = 1
+script = ExtResource("3_wfyoq")
+
+[node name="Camera2D" type="Camera2D" parent="draw_vp"]
+enabled = false
+
+[node name="cursor" type="Sprite2D" parent="."]
+z_index = 4096
+material = SubResource("ShaderMaterial_g425y")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lfbv3")
+script = ExtResource("4_55t5i")
